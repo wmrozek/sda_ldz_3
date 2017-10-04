@@ -4,6 +4,12 @@ import java.util.Random;
 
 public class RandomNumberGenerator {
 
+    private static int ID_SEQUENCE = 0;
+
+    public static int getNextSequence(){
+        return ++ID_SEQUENCE;
+    }
+
     public static String drawLottoNumbers(){
         Random random = new Random();
         StringBuilder sb = new StringBuilder();
@@ -15,4 +21,6 @@ public class RandomNumberGenerator {
         }
         return sb.toString();
     }
+
+
 }

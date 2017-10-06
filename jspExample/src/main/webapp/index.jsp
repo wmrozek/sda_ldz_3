@@ -17,6 +17,9 @@
 <div style="float:right; width:70%;">
     <p>Strona główna biblioteki - wyberz opcje menu z lewej strony.</p>
 
+    <form action="/logout" method="post">
+        <input type="submit" value="Wyloguj z systemu"/>
+    </form>
     <p>Wywołania strony: <%= ++requestCount%></p>
 </div>
 <div style="clear:both"></div>

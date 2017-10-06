@@ -15,13 +15,8 @@
 <%@ include file="header.jsp"%>
 <div style="float:left; width:30%;"><%@ include file="menu.jsp" %></div>
 <div style="float:right; width:70%;">
-    <p>Wystąpił błąd - wróć na stronę główną...</p>
-    <form action="/login" method="post">
-        <label>Nazwa użytkownika</label><input type="text" name="login"/>
-        <label>Hasło</label><input type="text" name="password"/>
-        <input type="submit" value="Zaloguj">
-    </form>
-
+    <p>Strona główna biblioteki - wyberz opcje menu z lewej strony.</p>
+    <p>Zalogowany użytkownik - ${loggedUser}</p>
     <p>Wywołania strony: <%= ++requestCount%></p>
 </div>
 <div style="clear:both"></div>

@@ -1,4 +1,5 @@
-
+<%@ page import="com.sda.jspexample.model.User" %>
+<%@ page import="com.sda.jspexample.users.repository.UserRepository" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--  Created by IntelliJ IDEA.
   User: wim
@@ -28,9 +29,33 @@
 
     <p>Wypożyczasz książkę - ${book.getTitle()}</p>
 
+    <form action="/rentBookByLoggedUser" method="post">
+        <input type="hidden" name="bookId" value="${book.getId()}">
+    <%
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies){
+            if (cookie.getName().equals("userId")){
+                String userId = cookie.getValue();
+                User user = UserRepository.getUserById(userId);
+                if (user != null){
+                    out.println(String.format("Czy chcesz wypożyczyć " +
+                            "książkę jako użytkownik " +
+                            "<br/> %s %s <br/> %s", user.getName(),
+                            user.getSurname(), user.getPesel()));
+                    out.println("<input type=\"hidden\" name=\"memberId\" value=\""+user.getId()+"\"/>");
+                    out.println("<input type=\"submit\">Wypożycz</input>");
+                }
+            }
+        }
+    %>
+    </form>
+
     <p>Podaj dane osobowe:</p>
     <form name="userForm" action="/rentBook" method="post">
         <input type="hidden" name="bookId" value="${book.getId()}"/>
+        <input type="text" name="name"/>
+        <input type="text" name="surname"/>
+        <input type="text" name="pesel"/>
         <input type="submit" />
 
     </form>

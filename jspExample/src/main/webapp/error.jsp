@@ -23,6 +23,8 @@
     </form>
 
     <p>Wywołania strony: <%= ++requestCount%></p>
+
+    <p>A to zrobilem w branchu - HAHA!</p>
 </div>
 <div style="clear:both"></div>
 

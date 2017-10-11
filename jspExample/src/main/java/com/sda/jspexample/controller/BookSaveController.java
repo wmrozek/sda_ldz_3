@@ -4,6 +4,7 @@ import com.sda.jspexample.book.repository.BookRepository;
 import com.sda.jspexample.library.books.Book;
 import com.sda.jspexample.model.User;
 import com.sda.jspexample.users.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,13 +17,16 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class BookSaveController {
 
+    @Autowired
+    private BookRepository repository;
+
     @RequestMapping(value="/addBook", method = RequestMethod.POST)
     public String addBook(@ModelAttribute("bookForm") Book book,
                           HttpServletRequest request,
                           HttpServletResponse response){
         System.out.println(book.getTitle());
         System.out.println(book.getPageCount());
-        BookRepository.addBook(book);
+        repository.addBook(book);
         Cookie cookieTitle = new Cookie("bookTitle", Integer.toString(book.getId()));
         cookieTitle.setMaxAge(30);
         Cookie cookiePageCount = new Cookie("bookPageCount",

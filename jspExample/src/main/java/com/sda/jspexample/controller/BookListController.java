@@ -5,6 +5,7 @@ import com.sda.jspexample.library.books.Book;
 import com.sda.jspexample.menu.MenuElement;
 import com.sda.jspexample.model.ModelAndViewWithMenu;
 import com.sda.jspexample.random.utils.BookGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +17,9 @@ import java.util.List;
 @Controller
 public class BookListController {
 
+    @Autowired
+    private BookRepository repository;
+
     @RequestMapping(value="/")
     public ModelAndView startPage(){
             ModelAndView model = new ModelAndViewWithMenu();
@@ -26,7 +30,7 @@ public class BookListController {
     @RequestMapping(value="/books")
     public ModelAndView getBooks() {
         ModelAndView model = new ModelAndViewWithMenu();
-        List<Book> list = BookRepository.getBooks();
+        List<Book> list = repository.getBooks();
         model.addObject("list", list);
         model.setViewName("bookList.jsp");
         return model;

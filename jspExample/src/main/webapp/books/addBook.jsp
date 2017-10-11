@@ -34,7 +34,11 @@
     </p>
     <form name="bookForm" action="/addBook" method="post">
         <label>Nazwa ksiązki</label><input type="text" name="title" />
+        <label>ISBN</label><input type="text" name="isbn" />
+        <label>Imię autora</label><input type="text" name="author.name" />
+        <label>Nazwisko autora</label><input type="text" name="author.surname" />
         <label>Liczba stron</label><input type="text" name="pageCount" />
+        <label>Kategoria</label><input type="text" name="genre" />
         <input type="submit" value="Zapisz" />
 
     </form>

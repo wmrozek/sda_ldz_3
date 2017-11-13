@@ -1,11 +1,35 @@
 package com.sda.jspexample.library.books;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+@Entity
+@Table(name="books")
 public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @Column
     private String title;
+    @Column
     private String isbn;
+    @Transient
     private Integer pageCount;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_author")
     private Author author;
+    @Column
+    @Enumerated(EnumType.STRING)
     private BookGenre genre;
 
     public Book() {

@@ -1,6 +1,7 @@
 package com.sda.jspexample.controller;
 
 import com.sda.jspexample.book.repository.BookRepository;
+import com.sda.jspexample.library.books.Author;
 import com.sda.jspexample.library.books.Book;
 import com.sda.jspexample.model.User;
 import com.sda.jspexample.users.repository.UserRepository;
@@ -10,9 +11,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
+import java.util.List;
 
 @Controller
 public class BookSaveController {
@@ -20,13 +26,30 @@ public class BookSaveController {
     @Autowired
     private BookRepository repository;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @RequestMapping(value="/addBook", method = RequestMethod.POST)
+    @Transactional(rollbackOn = RuntimeException.class)
     public String addBook(@ModelAttribute("bookForm") Book book,
                           HttpServletRequest request,
-                          HttpServletResponse response){
+                          HttpServletResponse response) throws RuntimeException{
         System.out.println(book.getTitle());
         System.out.println(book.getPageCount());
-        repository.addBook(book);
+
+//        repository.addBook(book);
+        Query query = entityManager.createQuery("SELECT a FROM Author a WHERE a.name = :name AND a.surname = :surname");
+        query.setParameter("name", book.getAuthor().getName());
+        query.setParameter("surname", book.getAuthor().getSurname());
+        List<Author> a = query.getResultList();
+        if (a.size() > 0){
+            book.setAuthor(a.get(0));
+        }else{
+            entityManager.persist(book.getAuthor());
+        }
+        entityManager.persist(book);
+
+
         Cookie cookieTitle = new Cookie("bookTitle", Integer.toString(book.getId()));
         cookieTitle.setMaxAge(30);
         Cookie cookiePageCount = new Cookie("bookPageCount",
